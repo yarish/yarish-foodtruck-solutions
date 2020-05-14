@@ -1,0 +1,44 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.0.3.RELEASE")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter-web")
+    compile("com.socrata:soda-api-java:0.9.13")
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+group = "com.yarishllc"
+version = "1.0"
+
+bootJar {
+    launchScript()
+}
+
+task run(type: Exec) {
+    println "Executing: $jar.archivePath"
+
+    commandLine jar.archivePath
+
+    doFirst {
+        standardInput = System.in
+        standardOutput = System.out
+    }
+}
+run.dependsOn jar, bootJar
